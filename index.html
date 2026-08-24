@@ -107,15 +107,15 @@
             20% { opacity: 0.7; }
             80% { opacity: 0.7; }
             100% {
-                transform: translateY(110vh) translateX(50px) rotate(360deg);
+                transform: translateY(110vh) translateX(80px) rotate(360deg);
                 opacity: 0;
             }
         }
 
         .mystic-fog {
             position: fixed;
-            width: 300px;
-            height: 300px;
+            width: 400px;
+            height: 400px;
             background: radial-gradient(circle, rgba(180,156,223,0.15) 0%, rgba(180,156,223,0) 70%);
             border-radius: 50%;
             z-index: 1;
@@ -123,20 +123,21 @@
             animation: fogFloat 20s ease-in-out infinite alternate;
             filter: blur(20px);
         }
-        .fog-1 { top: 10%; left: -100px; animation-duration: 25s; }
-        .fog-2 { bottom: 20%; right: -50px; animation-duration: 30s; animation-delay: 5s; }
-        .fog-3 { top: 60%; left: 40%; animation-duration: 35s; animation-delay: 10s; }
+        .fog-1 { top: 5%; left: -100px; animation-duration: 22s; }
+        .fog-2 { bottom: 10%; right: -50px; animation-duration: 28s; animation-delay: 4s; }
+        .fog-3 { top: 50%; left: 30%; animation-duration: 32s; animation-delay: 8s; }
+        .fog-4 { top: 20%; right: 20%; animation-duration: 26s; animation-delay: 12s; width: 250px; height: 250px; }
 
         @keyframes fogFloat {
             0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(80px, -50px) scale(1.2); }
+            100% { transform: translate(100px, -80px) scale(1.3); }
         }
 
         /* ============================================================
            ОБЩИЙ КОНТЕЙНЕР
            ============================================================ */
         .container {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 2rem 1.5rem;
             position: relative;
@@ -171,27 +172,10 @@
             50% { text-shadow: 0 0 15px var(--white), 0 0 30px var(--lavender), 0 0 60px var(--lavender-light), 0 0 80px var(--glow-lavender); }
         }
 
-        .subtitle {
-            font-family: var(--font-sans);
-            font-weight: 300;
-            font-size: 1.2rem;
-            color: var(--text-silver);
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            margin-top: 0.5rem;
-            text-shadow: 0 0 8px rgba(255,255,255,0.5);
-            animation: subtitleFade 3s ease-in-out infinite;
-        }
-
-        @keyframes subtitleFade {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
-        }
-
         .header::after {
             content: '';
             display: block;
-            width: 300px;
+            width: 250px;
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--lavender), var(--white), var(--lavender), transparent);
             margin: 2rem auto 0;
@@ -204,7 +188,7 @@
         .section-title {
             font-family: var(--font-serif);
             font-weight: 700;
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: var(--white);
             text-align: center;
             margin: 3rem 0 2rem;
@@ -215,93 +199,91 @@
         .section-title::after {
             content: '';
             display: block;
-            width: 150px;
+            width: 120px;
             height: 1px;
             background: linear-gradient(90deg, transparent, var(--lavender), transparent);
             margin: 0.8rem auto 0;
         }
 
         /* ============================================================
-           СЕТКА КАРТОЧЕК ПРАВИЛ
+           СПИСОК ПРАВИЛ (вертикальный)
            ============================================================ */
-        .rules-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            perspective: 1200px;
+        .rules-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
-        .rule-card {
-            background: linear-gradient(145deg, rgba(74,59,92,0.7), rgba(26,18,37,0.9));
+        .rule-item {
+            background: linear-gradient(145deg, rgba(74,59,92,0.6), rgba(26,18,37,0.8));
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(180,156,223,0.4);
-            border-radius: 20px;
-            padding: 2rem 1.5rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px rgba(180,156,223,0.2);
-            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: 1px solid rgba(180,156,223,0.3);
+            border-radius: 16px;
+            padding: 1.5rem 1.8rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4), 0 0 10px rgba(180,156,223,0.15);
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            transform-style: preserve-3d;
-            will-change: transform;
             opacity: 0;
-            transform: translateY(60px) scale(0.9);
-            animation: cardAppear 0.8s forwards;
-            animation-delay: calc(var(--card-index, 0) * 0.15s);
+            transform: translateY(30px);
+            animation: ruleAppear 0.6s forwards;
+            animation-delay: calc(var(--rule-index, 0) * 0.1s);
         }
 
-        .rule-card:nth-child(odd) {
-            animation-name: cardAppearLeft;
+        .rule-item:nth-child(odd) {
+            animation-name: ruleAppearLeft;
         }
-        .rule-card:nth-child(even) {
-            animation-name: cardAppearRight;
-        }
-
-        @keyframes cardAppear {
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        .rule-item:nth-child(even) {
+            animation-name: ruleAppearRight;
         }
 
-        @keyframes cardAppearLeft {
-            from { opacity: 0; transform: translateX(-70px) rotateY(10deg) scale(0.9); }
-            to { opacity: 1; transform: translateX(0) rotateY(0) scale(1); }
+        @keyframes ruleAppear {
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes cardAppearRight {
-            from { opacity: 0; transform: translateX(70px) rotateY(-10deg) scale(0.9); }
-            to { opacity: 1; transform: translateX(0) rotateY(0) scale(1); }
+        @keyframes ruleAppearLeft {
+            from { opacity: 0; transform: translateX(-40px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
-        .rule-card:hover {
+        @keyframes ruleAppearRight {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .rule-item:hover {
             border-color: var(--lavender);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.7), 0 0 30px rgba(180,156,223,0.5);
-            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.6), 0 0 20px rgba(180,156,223,0.3);
+            transform: translateY(-4px);
         }
 
-        .rule-card::before {
+        .rule-item::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(180,156,223,0.2) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.4s;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(180,156,223,0.1) 0%, transparent 60%);
             pointer-events: none;
         }
-        .rule-card:hover::before {
-            opacity: 1;
+
+        .rule-header {
+            display: flex;
+            align-items: baseline;
+            gap: 0.8rem;
+            margin-bottom: 0.5rem;
         }
 
         .rule-number {
-            display: inline-block;
             font-family: var(--font-serif);
             font-weight: 800;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             color: var(--lavender-light);
             text-shadow: 0 0 10px var(--glow-lavender);
-            margin-bottom: 0.5rem;
+            min-width: 2rem;
         }
 
         .rule-title {
@@ -309,7 +291,6 @@
             font-weight: 700;
             font-size: 1.4rem;
             color: var(--white);
-            margin-bottom: 0.7rem;
             letter-spacing: 0.05em;
         }
 
@@ -317,7 +298,7 @@
             color: var(--text-silver);
             font-size: 0.95rem;
             line-height: 1.6;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             word-wrap: break-word;
         }
 
@@ -333,7 +314,7 @@
             box-shadow: 0 0 8px rgba(193,74,111,0.3);
             transition: all 0.3s;
         }
-        .rule-card:hover .rule-punishment {
+        .rule-item:hover .rule-punishment {
             background: rgba(193, 74, 111, 0.35);
             box-shadow: 0 0 12px rgba(193,74,111,0.5);
             transform: scale(1.03);
@@ -360,22 +341,20 @@
            АДАПТИВНОСТЬ
            ============================================================ */
         @media (max-width: 768px) {
-            .rules-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
+            .container {
+                padding: 1rem 1rem;
             }
             .main-title {
                 font-size: 2.5rem;
             }
-            .subtitle {
-                font-size: 0.9rem;
-                letter-spacing: 0.1em;
-            }
             .section-title {
                 font-size: 1.8rem;
             }
-            .rule-card {
-                padding: 1.5rem;
+            .rule-item {
+                padding: 1.2rem 1.2rem;
+            }
+            .rule-title {
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -392,111 +371,133 @@
     <div class="mystic-fog fog-1"></div>
     <div class="mystic-fog fog-2"></div>
     <div class="mystic-fog fog-3"></div>
+    <div class="mystic-fog fog-4"></div>
 
     <!-- Основной контент -->
     <div class="container">
         <header class="header">
             <h1 class="main-title">Night Tokio</h1>
-            <p class="subtitle">Мистическое аниме-пространство</p>
         </header>
 
         <!-- Правила чата -->
         <h2 class="section-title">Правила чата</h2>
-        <div class="rules-grid">
+        <div class="rules-list">
             <!-- Правило 1 -->
-            <div class="rule-card" style="--card-index: 0;">
-                <div class="rule-number">1.</div>
-                <h3 class="rule-title">Спам</h3>
+            <div class="rule-item" style="--rule-index: 0;">
+                <div class="rule-header">
+                    <span class="rule-number">1.</span>
+                    <span class="rule-title">Спам</span>
+                </div>
                 <p class="rule-description">
                     Кидать одно и тоже сообщения/стикеры/гифы/эмодзи БОЛЬШЕ трех раз подряд запрещено! Использовать бота больше трех раз подряд тоже запрещено.
                 </p>
                 <span class="rule-punishment">Варн и возможно мут</span>
             </div>
             <!-- Правило 2 -->
-            <div class="rule-card" style="--card-index: 1;">
-                <div class="rule-number">2.</div>
-                <h3 class="rule-title">Реклама</h3>
+            <div class="rule-item" style="--rule-index: 1;">
+                <div class="rule-header">
+                    <span class="rule-number">2.</span>
+                    <span class="rule-title">Реклама</span>
+                </div>
                 <p class="rule-description">
                     Приглашать кого-то или показывать какой-то тгк/флуд и т.д. нельзя.
                 </p>
                 <span class="rule-punishment">Варн</span>
             </div>
             <!-- Правило 3 -->
-            <div class="rule-card" style="--card-index: 2;">
-                <div class="rule-number">3.</div>
-                <h3 class="rule-title">Оскорбление и ссоры</h3>
+            <div class="rule-item" style="--rule-index: 2;">
+                <div class="rule-header">
+                    <span class="rule-number">3.</span>
+                    <span class="rule-title">Оскорбление и ссоры</span>
+                </div>
                 <p class="rule-description">
                     Оскорблять религии/расу/нацию/чьих-то родных/кого-то даже в шутку нельзя, если тот не будет против — наказания не будет. За ссору дается варн и мут, ссору можно продолжить в лч (личном чате).
                 </p>
                 <span class="rule-punishment">Варн</span>
             </div>
             <!-- Правило 4 -->
-            <div class="rule-card" style="--card-index: 3;">
-                <div class="rule-number">4.</div>
-                <h3 class="rule-title">18+/расчлененка</h3>
+            <div class="rule-item" style="--rule-index: 3;">
+                <div class="rule-header">
+                    <span class="rule-number">4.</span>
+                    <span class="rule-title">18+/расчлененка</span>
+                </div>
                 <p class="rule-description">
                     Они запрещены. Кто кинет — получает варн, иногда и мут.
                 </p>
                 <span class="rule-punishment">Варн / мут</span>
             </div>
             <!-- Правило 5 -->
-            <div class="rule-card" style="--card-index: 4;">
-                <div class="rule-number">5.</div>
-                <h3 class="rule-title">Роль</h3>
+            <div class="rule-item" style="--rule-index: 4;">
+                <div class="rule-header">
+                    <span class="rule-number">5.</span>
+                    <span class="rule-title">Роль</span>
+                </div>
                 <p class="rule-description">
                     Можно брать только свободную роль. Бронировать роль можно максимум 10 дней. Если вы не зайдёте спустя 10 дней после открытия набора, мы уберём вас из списка. Менять роль можно максимум 3 раза.
                 </p>
                 <span class="rule-punishment">—</span>
             </div>
             <!-- Правило 6 -->
-            <div class="rule-card" style="--card-index: 5;">
-                <div class="rule-number">6.</div>
-                <h3 class="rule-title">Политика</h3>
+            <div class="rule-item" style="--rule-index: 5;">
+                <div class="rule-header">
+                    <span class="rule-number">6.</span>
+                    <span class="rule-title">Политика</span>
+                </div>
                 <p class="rule-description">
                     Обсуждать политику и религию запрещено.
                 </p>
                 <span class="rule-punishment">Варн</span>
             </div>
             <!-- Правило 7 -->
-            <div class="rule-card" style="--card-index: 6;">
-                <div class="rule-number">7.</div>
-                <h3 class="rule-title">Изменения</h3>
+            <div class="rule-item" style="--rule-index: 6;">
+                <div class="rule-header">
+                    <span class="rule-number">7.</span>
+                    <span class="rule-title">Изменения</span>
+                </div>
                 <p class="rule-description">
                     Менять во флуде ничего нельзя! Название, настройки, добавлять людей и т.д. не разрешено.
                 </p>
                 <span class="rule-punishment">Варн</span>
             </div>
             <!-- Правило 8 -->
-            <div class="rule-card" style="--card-index: 7;">
-                <div class="rule-number">8.</div>
-                <h3 class="rule-title">Знакомые</h3>
+            <div class="rule-item" style="--rule-index: 7;">
+                <div class="rule-header">
+                    <span class="rule-number">8.</span>
+                    <span class="rule-title">Знакомые</span>
+                </div>
                 <p class="rule-description">
                     Во флуд можно добавлять только ДВУХ знакомых, кучками нельзя, и обязательно предупреждайте!
                 </p>
                 <span class="rule-punishment">Устное предупреждение</span>
             </div>
             <!-- Правило 9 -->
-            <div class="rule-card" style="--card-index: 8;">
-                <div class="rule-number">9.</div>
-                <h3 class="rule-title">Калл</h3>
+            <div class="rule-item" style="--rule-index: 8;">
+                <div class="rule-header">
+                    <span class="rule-number">9.</span>
+                    <span class="rule-title">Калл</span>
+                </div>
                 <p class="rule-description">
                     Нельзя делать калл простым участникам.
                 </p>
                 <span class="rule-punishment">Варн</span>
             </div>
             <!-- Правило 10 -->
-            <div class="rule-card" style="--card-index: 9;">
-                <div class="rule-number">10.</div>
-                <h3 class="rule-title">Неуважение к администрации</h3>
+            <div class="rule-item" style="--rule-index: 9;">
+                <div class="rule-header">
+                    <span class="rule-number">10.</span>
+                    <span class="rule-title">Неуважение к администрации</span>
+                </div>
                 <p class="rule-description">
                     Оскорблять всерьёз, относиться не всерьёз к словам админов (про то, что дадут мут, варн, бан) карается устным предупреждением, во второй раз варном.
                 </p>
                 <span class="rule-punishment">Устное предупреждение / варн</span>
             </div>
             <!-- Правило 11 -->
-            <div class="rule-card" style="--card-index: 10;">
-                <div class="rule-number">11.</div>
-                <h3 class="rule-title">Заход</h3>
+            <div class="rule-item" style="--rule-index: 10;">
+                <div class="rule-header">
+                    <span class="rule-number">11.</span>
+                    <span class="rule-title">Заход</span>
+                </div>
                 <p class="rule-description">
                     Заходить обратно во флуд можно только 2 раза.
                 </p>
@@ -506,29 +507,35 @@
 
         <!-- Правила для администрации -->
         <h2 class="section-title">Правила для администрации</h2>
-        <div class="rules-grid">
+        <div class="rules-list">
             <!-- Админ правило 1 -->
-            <div class="rule-card" style="--card-index: 0;">
-                <div class="rule-number">1.</div>
-                <h3 class="rule-title">Полномочия</h3>
+            <div class="rule-item" style="--rule-index: 0;">
+                <div class="rule-header">
+                    <span class="rule-number">1.</span>
+                    <span class="rule-title">Полномочия</span>
+                </div>
                 <p class="rule-description">
                     Администрации не положено превышать свои полномочия.
                 </p>
                 <span class="rule-punishment">Варн (во второй раз бан)</span>
             </div>
             <!-- Админ правило 2 -->
-            <div class="rule-card" style="--card-index: 1;">
-                <div class="rule-number">2.</div>
-                <h3 class="rule-title">Личная неприязнь</h3>
+            <div class="rule-item" style="--rule-index: 1;">
+                <div class="rule-header">
+                    <span class="rule-number">2.</span>
+                    <span class="rule-title">Личная неприязнь</span>
+                </div>
                 <p class="rule-description">
                     Личная неприязнь к участнику не должна влиять на комфорт флуда.
                 </p>
                 <span class="rule-punishment">—</span>
             </div>
             <!-- Админ правило 3 -->
-            <div class="rule-card" style="--card-index: 2;">
-                <div class="rule-number">3.</div>
-                <h3 class="rule-title">Обязанности</h3>
+            <div class="rule-item" style="--rule-index: 2;">
+                <div class="rule-header">
+                    <span class="rule-number">3.</span>
+                    <span class="rule-title">Обязанности</span>
+                </div>
                 <p class="rule-description">
                     За нарушение своих обязанностей админ будет снят с поста.
                 </p>
@@ -537,7 +544,7 @@
         </div>
 
         <footer class="footer">
-            ✦ Night Tokio ✦ Мистика и аниме ✦
+            ✦ Night Tokio ✦
         </footer>
     </div>
 
@@ -554,7 +561,7 @@
         import * as THREE from 'three';
 
         // ============================================================
-        // 1. 3D-ФОН С ЧАСТИЦАМИ (фиолетово-белое свечение)
+        // 1. 3D-ФОН С ЧАСТИЦАМИ (усиленное движение)
         // ============================================================
         const canvas = document.getElementById('bg-canvas');
         const scene = new THREE.Scene();
@@ -567,7 +574,7 @@
         renderer.setClearColor(0x000000, 0);
 
         // Частицы
-        const particlesCount = 2000;
+        const particlesCount = 2500;
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particlesCount * 3);
         const colors = new Float32Array(particlesCount * 3);
@@ -575,6 +582,7 @@
         const lavenderColor = new THREE.Color(0xB49CDF);
         const whiteColor = new THREE.Color(0xFFFFFF);
         const greyBlueColor = new THREE.Color(0x7B8E9E);
+        const roseColor = new THREE.Color(0xC14A6F);
 
         for (let i = 0; i < particlesCount; i++) {
             const radius = Math.random() * 10;
@@ -587,9 +595,10 @@
             
             const rand = Math.random();
             let color;
-            if (rand < 0.6) color = lavenderColor;
-            else if (rand < 0.9) color = whiteColor;
-            else color = greyBlueColor;
+            if (rand < 0.55) color = lavenderColor;
+            else if (rand < 0.85) color = whiteColor;
+            else if (rand < 0.95) color = greyBlueColor;
+            else color = roseColor;
             
             colors[i * 3] = color.r;
             colors[i * 3 + 1] = color.g;
@@ -632,14 +641,14 @@
         const particles = new THREE.Points(geometry, material);
         scene.add(particles);
 
-        // Второй слой — мелкие яркие звёздочки
+        // Второй слой — мелкие яркие звёздочки (быстрее)
         const starsGeometry = new THREE.BufferGeometry();
-        const starsCount = 500;
+        const starsCount = 800;
         const starsPositions = new Float32Array(starsCount * 3);
         for (let i = 0; i < starsCount; i++) {
-            starsPositions[i * 3] = (Math.random() - 0.5) * 15;
-            starsPositions[i * 3 + 1] = (Math.random() - 0.5) * 15;
-            starsPositions[i * 3 + 2] = (Math.random() - 0.5) * 15;
+            starsPositions[i * 3] = (Math.random() - 0.5) * 20;
+            starsPositions[i * 3 + 1] = (Math.random() - 0.5) * 20;
+            starsPositions[i * 3 + 2] = (Math.random() - 0.5) * 20;
         }
         starsGeometry.setAttribute('position', new THREE.BufferAttribute(starsPositions, 3));
 
@@ -657,7 +666,7 @@
         const stars = new THREE.Points(starsGeometry, starsMaterial);
         scene.add(stars);
 
-        // Плавное вращение и реакция на мышь
+        // Плавное вращение и реакция на мышь (усилено)
         let mouseX = 0, mouseY = 0;
         let targetMouseX = 0, targetMouseY = 0;
         const windowHalfX = window.innerWidth / 2;
@@ -677,18 +686,23 @@
         function animate3D() {
             requestAnimationFrame(animate3D);
 
-            mouseX += (targetMouseX - mouseX) * 0.05;
-            mouseY += (targetMouseY - mouseY) * 0.05;
+            mouseX += (targetMouseX - mouseX) * 0.07;
+            mouseY += (targetMouseY - mouseY) * 0.07;
 
-            particles.rotation.y += 0.0002;
-            particles.rotation.x += 0.0001;
-            stars.rotation.y -= 0.0004;
-            stars.rotation.x -= 0.0002;
+            // Увеличенная скорость вращения
+            particles.rotation.y += 0.0006;
+            particles.rotation.x += 0.0002;
+            stars.rotation.y -= 0.0010;
+            stars.rotation.x -= 0.0005;
 
-            particles.rotation.y += mouseX * 0.001;
-            particles.rotation.x += mouseY * 0.001;
-            stars.rotation.y += mouseX * 0.002;
-            stars.rotation.x += mouseY * 0.002;
+            // Добавляем небольшое перемещение по орбите (вращение вокруг оси)
+            particles.rotation.z += 0.0001;
+            stars.rotation.z -= 0.0002;
+
+            particles.rotation.y += mouseX * 0.003;
+            particles.rotation.x += mouseY * 0.003;
+            stars.rotation.y += mouseX * 0.005;
+            stars.rotation.x += mouseY * 0.005;
 
             renderer.render(scene, camera);
         }
@@ -699,38 +713,34 @@
         // ============================================================
         const starsContainer = document.getElementById('stars-container');
         const starSymbols = ['✦', '✧', '⋆', '✩', '⋆', '☆'];
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 40; i++) {
             const star = document.createElement('div');
             star.classList.add('floating-star');
             star.textContent = starSymbols[Math.floor(Math.random() * starSymbols.length)];
             star.style.left = `${Math.random() * 100}%`;
             star.style.fontSize = `${Math.random() * 1.2 + 0.8}rem`;
-            star.style.animationDuration = `${Math.random() * 10 + 8}s`;
+            star.style.animationDuration = `${Math.random() * 8 + 6}s`;
             star.style.animationDelay = `${Math.random() * 15}s`;
             star.style.opacity = 0.3 + Math.random() * 0.5;
             starsContainer.appendChild(star);
         }
 
         // ============================================================
-        // 3. МЯГКИЙ 3D-НАКЛОН КАРТОЧЕК
+        // 3. Плавное появление правил при прокрутке (Intersection Observer)
         // ============================================================
-        document.querySelectorAll('.rule-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -6;
-                const rotateY = ((x - centerX) / centerX) * 6;
-                card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.03)`;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
             });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.rule-item').forEach(item => {
+            observer.observe(item);
         });
 
-        console.log('Night Tokio правила загружены! ✦');
+        console.log('Night Tokio обновлён! ✦');
     </script>
 </body>
-</html>
+    </html>
