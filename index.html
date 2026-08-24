@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Night Tokio | Правила</title>
+    <!-- Подключаем аниме-шрифты с мистическим настроением -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+           ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ (фиолетово-черная мистическая палитра)
+           ============================================================ */
+        :root {
+            --bg-dark: #1A1225;
+            --bg-medium: #2B1B3D;
+            --bg-light: #4A3B5C;
+            --text-bright: #F4EFF7;
+            --text-silver: #E6E0EB;
+            --lavender: #B49CDF;
+            --lavender-light: #C9B8E8;
+            --purple-deep: #4A3B5C;
+            --purple-shadow: #6A567C;
+            --black: #0D0D0D;
+            --white: #FFFFFF;
+            --accent-rose: #C14A6F;
+            --accent-wine: #A63A5B;
+            --grey-blue: #7B8E9E;
+            --glow-lavender: rgba(180, 156, 223, 0.6);
+            --glow-white: rgba(255, 255, 255, 0.8);
+            --font-serif: 'Shippori Mincho', serif;
+            --font-sans: 'Zen Kaku Gothic New', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-dark);
+            color: var(--text-bright);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            cursor: default;
+            scroll-behavior: smooth;
+        }
+
+        /* ============================================================
+           ФОНОВЫЙ ГРАДИЕНТ С АНИМАЦИЕЙ
+           ============================================================ */
+        .bg-gradient-animated {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1A1225 0%, #2B1B3D 40%, #1A1225 70%, #2B1B3D 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* ============================================================
+           3D-КАНВАС (Three.js) для частиц
+           ============================================================ */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* ============================================================
+           ДОПОЛНИТЕЛЬНЫЕ АНИМИРОВАННЫЕ ЭЛЕМЕНТЫ (CSS)
+           ============================================================ */
+        .floating-star {
+            position: fixed;
+            color: var(--lavender-light);
+            font-size: 1.5rem;
+            z-index: 1;
+            pointer-events: none;
+            animation: starFloat linear infinite;
+            opacity: 0.7;
+            text-shadow: 0 0 8px var(--glow-lavender);
+        }
+
+        @keyframes starFloat {
+            0% {
+                transform: translateY(-10vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            20% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% {
+                transform: translateY(110vh) translateX(50px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .mystic-fog {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(180,156,223,0.15) 0%, rgba(180,156,223,0) 70%);
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+            animation: fogFloat 20s ease-in-out infinite alternate;
+            filter: blur(20px);
+        }
+        .fog-1 { top: 10%; left: -100px; animation-duration: 25s; }
+        .fog-2 { bottom: 20%; right: -50px; animation-duration: 30s; animation-delay: 5s; }
+        .fog-3 { top: 60%; left: 40%; animation-duration: 35s; animation-delay: 10s; }
+
+        @keyframes fogFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(80px, -50px) scale(1.2); }
+        }
+
+        /* ============================================================
+           ОБЩИЙ КОНТЕЙНЕР
+           ============================================================ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ============================================================
+           ШАПКА (ЗАГОЛОВОК)
+           ============================================================ */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-top: 4rem;
+            position: relative;
+        }
+
+        .main-title {
+            font-family: var(--font-serif);
+            font-weight: 800;
+            font-size: clamp(3rem, 10vw, 6rem);
+            color: var(--white);
+            text-shadow: 0 0 10px var(--lavender), 0 0 20px var(--lavender-light), 0 0 40px var(--glow-lavender);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 10px var(--lavender), 0 0 20px var(--lavender-light), 0 0 40px var(--glow-lavender); }
+            50% { text-shadow: 0 0 15px var(--white), 0 0 30px var(--lavender), 0 0 60px var(--lavender-light), 0 0 80px var(--glow-lavender); }
+        }
+
+        .subtitle {
+            font-family: var(--font-sans);
+            font-weight: 300;
+            font-size: 1.2rem;
+            color: var(--text-silver);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-top: 0.5rem;
+            text-shadow: 0 0 8px rgba(255,255,255,0.5);
+            animation: subtitleFade 3s ease-in-out infinite;
+        }
+
+        @keyframes subtitleFade {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .header::after {
+            content: '';
+            display: block;
+            width: 300px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--lavender), var(--white), var(--lavender), transparent);
+            margin: 2rem auto 0;
+            box-shadow: 0 0 10px var(--glow-lavender);
+        }
+
+        /* ============================================================
+           ЗАГОЛОВКИ СЕКЦИЙ
+           ============================================================ */
+        .section-title {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 2.2rem;
+            color: var(--white);
+            text-align: center;
+            margin: 3rem 0 2rem;
+            letter-spacing: 0.1em;
+            text-shadow: 0 0 10px var(--lavender), 0 0 20px var(--glow-lavender);
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 150px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--lavender), transparent);
+            margin: 0.8rem auto 0;
+        }
+
+        /* ============================================================
+           СЕТКА КАРТОЧЕК ПРАВИЛ
+           ============================================================ */
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            perspective: 1200px;
+            margin-bottom: 2rem;
+        }
+
+        .rule-card {
+            background: linear-gradient(145deg, rgba(74,59,92,0.7), rgba(26,18,37,0.9));
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(180,156,223,0.4);
+            border-radius: 20px;
+            padding: 2rem 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px rgba(180,156,223,0.2);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            will-change: transform;
+            opacity: 0;
+            transform: translateY(60px) scale(0.9);
+            animation: cardAppear 0.8s forwards;
+            animation-delay: calc(var(--card-index, 0) * 0.15s);
+        }
+
+        .rule-card:nth-child(odd) {
+            animation-name: cardAppearLeft;
+        }
+        .rule-card:nth-child(even) {
+            animation-name: cardAppearRight;
+        }
+
+        @keyframes cardAppear {
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes cardAppearLeft {
+            from { opacity: 0; transform: translateX(-70px) rotateY(10deg) scale(0.9); }
+            to { opacity: 1; transform: translateX(0) rotateY(0) scale(1); }
+        }
+
+        @keyframes cardAppearRight {
+            from { opacity: 0; transform: translateX(70px) rotateY(-10deg) scale(0.9); }
+            to { opacity: 1; transform: translateX(0) rotateY(0) scale(1); }
+        }
+
+        .rule-card:hover {
+            border-color: var(--lavender);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7), 0 0 30px rgba(180,156,223,0.5);
+            transform: translateY(-8px) scale(1.03);
+        }
+
+        .rule-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(180,156,223,0.2) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+        .rule-card:hover::before {
+            opacity: 1;
+        }
+
+        .rule-number {
+            display: inline-block;
+            font-family: var(--font-serif);
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: var(--lavender-light);
+            text-shadow: 0 0 10px var(--glow-lavender);
+            margin-bottom: 0.5rem;
+        }
+
+        .rule-title {
+            font-family: var(--font-serif);
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--white);
+            margin-bottom: 0.7rem;
+            letter-spacing: 0.05em;
+        }
+
+        .rule-description {
+            color: var(--text-silver);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            word-wrap: break-word;
+        }
+
+        .rule-punishment {
+            display: inline-block;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: #ffb6c1;
+            background: rgba(193, 74, 111, 0.2);
+            border-left: 3px solid var(--accent-rose);
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            box-shadow: 0 0 8px rgba(193,74,111,0.3);
+            transition: all 0.3s;
+        }
+        .rule-card:hover .rule-punishment {
+            background: rgba(193, 74, 111, 0.35);
+            box-shadow: 0 0 12px rgba(193,74,111,0.5);
+            transform: scale(1.03);
+        }
+
+        /* ============================================================
+           ФУТЕР
+           ============================================================ */
+        .footer {
+            margin-top: 4rem;
+            text-align: center;
+            padding: 2rem 0;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            color: var(--grey-blue);
+            letter-spacing: 0.1em;
+            text-shadow: 0 0 5px rgba(255,255,255,0.2);
+            border-top: 1px solid rgba(180,156,223,0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ============================================================
+           АДАПТИВНОСТЬ
+           ============================================================ */
+        @media (max-width: 768px) {
+            .rules-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .main-title {
+                font-size: 2.5rem;
+            }
+            .subtitle {
+                font-size: 0.9rem;
+                letter-spacing: 0.1em;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .rule-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Фоновые слои -->
+    <div class="bg-gradient-animated"></div>
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Плавающие звёздочки (генерируются JS) -->
+    <div id="stars-container"></div>
+
+    <!-- Мистический туман -->
+    <div class="mystic-fog fog-1"></div>
+    <div class="mystic-fog fog-2"></div>
+    <div class="mystic-fog fog-3"></div>
+
+    <!-- Основной контент -->
+    <div class="container">
+        <header class="header">
+            <h1 class="main-title">Night Tokio</h1>
+            <p class="subtitle">Мистическое аниме-пространство</p>
+        </header>
+
+        <!-- Правила чата -->
+        <h2 class="section-title">Правила чата</h2>
+        <div class="rules-grid">
+            <!-- Правило 1 -->
+            <div class="rule-card" style="--card-index: 0;">
+                <div class="rule-number">1.</div>
+                <h3 class="rule-title">Спам</h3>
+                <p class="rule-description">
+                    Кидать одно и тоже сообщения/стикеры/гифы/эмодзи БОЛЬШЕ трех раз подряд запрещено! Использовать бота больше трех раз подряд тоже запрещено.
+                </p>
+                <span class="rule-punishment">Варн и возможно мут</span>
+            </div>
+            <!-- Правило 2 -->
+            <div class="rule-card" style="--card-index: 1;">
+                <div class="rule-number">2.</div>
+                <h3 class="rule-title">Реклама</h3>
+                <p class="rule-description">
+                    Приглашать кого-то или показывать какой-то тгк/флуд и т.д. нельзя.
+                </p>
+                <span class="rule-punishment">Варн</span>
+            </div>
+            <!-- Правило 3 -->
+            <div class="rule-card" style="--card-index: 2;">
+                <div class="rule-number">3.</div>
+                <h3 class="rule-title">Оскорбление и ссоры</h3>
+                <p class="rule-description">
+                    Оскорблять религии/расу/нацию/чьих-то родных/кого-то даже в шутку нельзя, если тот не будет против — наказания не будет. За ссору дается варн и мут, ссору можно продолжить в лч (личном чате).
+                </p>
+                <span class="rule-punishment">Варн</span>
+            </div>
+            <!-- Правило 4 -->
+            <div class="rule-card" style="--card-index: 3;">
+                <div class="rule-number">4.</div>
+                <h3 class="rule-title">18+/расчлененка</h3>
+                <p class="rule-description">
+                    Они запрещены. Кто кинет — получает варн, иногда и мут.
+                </p>
+                <span class="rule-punishment">Варн / мут</span>
+            </div>
+            <!-- Правило 5 -->
+            <div class="rule-card" style="--card-index: 4;">
+                <div class="rule-number">5.</div>
+                <h3 class="rule-title">Роль</h3>
+                <p class="rule-description">
+                    Можно брать только свободную роль. Бронировать роль можно максимум 10 дней. Если вы не зайдёте спустя 10 дней после открытия набора, мы уберём вас из списка. Менять роль можно максимум 3 раза.
+                </p>
+                <span class="rule-punishment">—</span>
+            </div>
+            <!-- Правило 6 -->
+            <div class="rule-card" style="--card-index: 5;">
+                <div class="rule-number">6.</div>
+                <h3 class="rule-title">Политика</h3>
+                <p class="rule-description">
+                    Обсуждать политику и религию запрещено.
+                </p>
+                <span class="rule-punishment">Варн</span>
+            </div>
+            <!-- Правило 7 -->
+            <div class="rule-card" style="--card-index: 6;">
+                <div class="rule-number">7.</div>
+                <h3 class="rule-title">Изменения</h3>
+                <p class="rule-description">
+                    Менять во флуде ничего нельзя! Название, настройки, добавлять людей и т.д. не разрешено.
+                </p>
+                <span class="rule-punishment">Варн</span>
+            </div>
+            <!-- Правило 8 -->
+            <div class="rule-card" style="--card-index: 7;">
+                <div class="rule-number">8.</div>
+                <h3 class="rule-title">Знакомые</h3>
+                <p class="rule-description">
+                    Во флуд можно добавлять только ДВУХ знакомых, кучками нельзя, и обязательно предупреждайте!
+                </p>
+                <span class="rule-punishment">Устное предупреждение</span>
+            </div>
+            <!-- Правило 9 -->
+            <div class="rule-card" style="--card-index: 8;">
+                <div class="rule-number">9.</div>
+                <h3 class="rule-title">Калл</h3>
+                <p class="rule-description">
+                    Нельзя делать калл простым участникам.
+                </p>
+                <span class="rule-punishment">Варн</span>
+            </div>
+            <!-- Правило 10 -->
+            <div class="rule-card" style="--card-index: 9;">
+                <div class="rule-number">10.</div>
+                <h3 class="rule-title">Неуважение к администрации</h3>
+                <p class="rule-description">
+                    Оскорблять всерьёз, относиться не всерьёз к словам админов (про то, что дадут мут, варн, бан) карается устным предупреждением, во второй раз варном.
+                </p>
+                <span class="rule-punishment">Устное предупреждение / варн</span>
+            </div>
+            <!-- Правило 11 -->
+            <div class="rule-card" style="--card-index: 10;">
+                <div class="rule-number">11.</div>
+                <h3 class="rule-title">Заход</h3>
+                <p class="rule-description">
+                    Заходить обратно во флуд можно только 2 раза.
+                </p>
+                <span class="rule-punishment">—</span>
+            </div>
+        </div>
+
+        <!-- Правила для администрации -->
+        <h2 class="section-title">Правила для администрации</h2>
+        <div class="rules-grid">
+            <!-- Админ правило 1 -->
+            <div class="rule-card" style="--card-index: 0;">
+                <div class="rule-number">1.</div>
+                <h3 class="rule-title">Полномочия</h3>
+                <p class="rule-description">
+                    Администрации не положено превышать свои полномочия.
+                </p>
+                <span class="rule-punishment">Варн (во второй раз бан)</span>
+            </div>
+            <!-- Админ правило 2 -->
+            <div class="rule-card" style="--card-index: 1;">
+                <div class="rule-number">2.</div>
+                <h3 class="rule-title">Личная неприязнь</h3>
+                <p class="rule-description">
+                    Личная неприязнь к участнику не должна влиять на комфорт флуда.
+                </p>
+                <span class="rule-punishment">—</span>
+            </div>
+            <!-- Админ правило 3 -->
+            <div class="rule-card" style="--card-index: 2;">
+                <div class="rule-number">3.</div>
+                <h3 class="rule-title">Обязанности</h3>
+                <p class="rule-description">
+                    За нарушение своих обязанностей админ будет снят с поста.
+                </p>
+                <span class="rule-punishment">Снятие с поста</span>
+            </div>
+        </div>
+
+        <footer class="footer">
+            ✦ Night Tokio ✦ Мистика и аниме ✦
+        </footer>
+    </div>
+
+    <!-- Подключаем Three.js -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+
+        // ============================================================
+        // 1. 3D-ФОН С ЧАСТИЦАМИ (фиолетово-белое свечение)
+        // ============================================================
+        const canvas = document.getElementById('bg-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setClearColor(0x000000, 0);
+
+        // Частицы
+        const particlesCount = 2000;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particlesCount * 3);
+        const colors = new Float32Array(particlesCount * 3);
+
+        const lavenderColor = new THREE.Color(0xB49CDF);
+        const whiteColor = new THREE.Color(0xFFFFFF);
+        const greyBlueColor = new THREE.Color(0x7B8E9E);
+
+        for (let i = 0; i < particlesCount; i++) {
+            const radius = Math.random() * 10;
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos((Math.random() * 2) - 1);
+            
+            positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+            positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+            positions[i * 3 + 2] = radius * Math.cos(phi);
+            
+            const rand = Math.random();
+            let color;
+            if (rand < 0.6) color = lavenderColor;
+            else if (rand < 0.9) color = whiteColor;
+            else color = greyBlueColor;
+            
+            colors[i * 3] = color.r;
+            colors[i * 3 + 1] = color.g;
+            colors[i * 3 + 2] = color.b;
+        }
+        
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        // Текстура для мягких круглых частиц
+        function createCircleTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 32;
+            canvas.height = 32;
+            const ctx = canvas.getContext('2d');
+            const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+            gradient.addColorStop(0, 'rgba(255,255,255,1)');
+            gradient.addColorStop(0.4, 'rgba(200,180,255,0.8)');
+            gradient.addColorStop(0.8, 'rgba(150,120,200,0.2)');
+            gradient.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 32, 32);
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.needsUpdate = true;
+            return texture;
+        }
+
+        const material = new THREE.PointsMaterial({
+            size: 0.08,
+            transparent: true,
+            opacity: 0.7,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            sizeAttenuation: true,
+            map: createCircleTexture(),
+            vertexColors: true,
+            alphaTest: 0.001
+        });
+
+        const particles = new THREE.Points(geometry, material);
+        scene.add(particles);
+
+        // Второй слой — мелкие яркие звёздочки
+        const starsGeometry = new THREE.BufferGeometry();
+        const starsCount = 500;
+        const starsPositions = new Float32Array(starsCount * 3);
+        for (let i = 0; i < starsCount; i++) {
+            starsPositions[i * 3] = (Math.random() - 0.5) * 15;
+            starsPositions[i * 3 + 1] = (Math.random() - 0.5) * 15;
+            starsPositions[i * 3 + 2] = (Math.random() - 0.5) * 15;
+        }
+        starsGeometry.setAttribute('position', new THREE.BufferAttribute(starsPositions, 3));
+
+        const starsMaterial = new THREE.PointsMaterial({
+            color: 0xFFFFFF,
+            size: 0.04,
+            transparent: true,
+            opacity: 0.9,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            sizeAttenuation: true,
+            map: createCircleTexture(),
+        });
+
+        const stars = new THREE.Points(starsGeometry, starsMaterial);
+        scene.add(stars);
+
+        // Плавное вращение и реакция на мышь
+        let mouseX = 0, mouseY = 0;
+        let targetMouseX = 0, targetMouseY = 0;
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (event) => {
+            targetMouseX = (event.clientX - windowHalfX) / windowHalfX;
+            targetMouseY = (event.clientY - windowHalfY) / windowHalfY;
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        function animate3D() {
+            requestAnimationFrame(animate3D);
+
+            mouseX += (targetMouseX - mouseX) * 0.05;
+            mouseY += (targetMouseY - mouseY) * 0.05;
+
+            particles.rotation.y += 0.0002;
+            particles.rotation.x += 0.0001;
+            stars.rotation.y -= 0.0004;
+            stars.rotation.x -= 0.0002;
+
+            particles.rotation.y += mouseX * 0.001;
+            particles.rotation.x += mouseY * 0.001;
+            stars.rotation.y += mouseX * 0.002;
+            stars.rotation.x += mouseY * 0.002;
+
+            renderer.render(scene, camera);
+        }
+        animate3D();
+
+        // ============================================================
+        // 2. ГЕНЕРАЦИЯ ПЛАВАЮЩИХ ЗВЁЗДОЧЕК (CSS)
+        // ============================================================
+        const starsContainer = document.getElementById('stars-container');
+        const starSymbols = ['✦', '✧', '⋆', '✩', '⋆', '☆'];
+        for (let i = 0; i < 30; i++) {
+            const star = document.createElement('div');
+            star.classList.add('floating-star');
+            star.textContent = starSymbols[Math.floor(Math.random() * starSymbols.length)];
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.fontSize = `${Math.random() * 1.2 + 0.8}rem`;
+            star.style.animationDuration = `${Math.random() * 10 + 8}s`;
+            star.style.animationDelay = `${Math.random() * 15}s`;
+            star.style.opacity = 0.3 + Math.random() * 0.5;
+            starsContainer.appendChild(star);
+        }
+
+        // ============================================================
+        // 3. МЯГКИЙ 3D-НАКЛОН КАРТОЧЕК
+        // ============================================================
+        document.querySelectorAll('.rule-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -6;
+                const rotateY = ((x - centerX) / centerX) * 6;
+                card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.03)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+
+        console.log('Night Tokio правила загружены! ✦');
+    </script>
+</body>
+</html>
